@@ -52,14 +52,18 @@ import com.example.ui.viewmodel.DashboardViewModel
 import java.util.Locale
 import kotlin.math.roundToInt
 
-// Soft and modern Material 3 Dashboard colors
-private val TrendBlue = Color(0xFF0284C7)
-private val ChartIndigo = Color(0xFF6366F1)
-private val EmeraldGreen = Color(0xFF10B981)
-private val WarmAmber = Color(0xFFF59E0B)
-private val DarkSlate = Color(0xFF0F172A)
-private val LightCardBg = Color(0xFFF8FAFC)
-private val SoftBorder = Color(0xFFE2E8F0)
+// Soft and modern Material 3 Dashboard Sleek theme colors
+private val TrendBlue = Color(0xFF0284C7)         // Sky blue
+private val ChartIndigo = Color(0xFF4F46E5)       // Indigo-600 (Primary accent)
+private val EmeraldGreen = Color(0xFF10B981)      // Green +2.4% indicator
+private val WarmAmber = Color(0xFFF59E0B)         // Amber reference
+private val DarkSlate = Color(0xFF0F172A)         // Slate-900 text
+private val SleekAppBg = Color(0xFFF7F9FC)        // Body wrapper background
+private val LightCardBg = Color(0xFFFFFFFF)       // White card background
+private val SoftBorder = Color(0xFFF1F5F9)        // border-slate-100
+private val SlateTextLight = Color(0xFF94A3B8)    // Slate-400
+private val SlateTextMedium = Color(0xFF64748B)   // Slate-500
+private val CardBorderLight = Color(0xFFE2E8F0)   // border-slate-200
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,71 +115,153 @@ fun DashboardScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        // Custom SVG-like graduation accent icon
-                        Box(
+            Column {
+                TopAppBar(
+                    title = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // Custom school launcher accent icon box matching 'w-10 h-10 rounded-xl bg-indigo-600'
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(ChartIndigo),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "EduPulse Logo",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "EduPulse",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = DarkSlate,
+                                    letterSpacing = (-0.5).sp
+                                )
+                                Text(
+                                    text = "GLOBAL DASHBOARD",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = SlateTextLight,
+                                    letterSpacing = 1.sp
+                                )
+                            }
+                        }
+                    },
+                    actions = {
+                        // Replaces the notification bell slot visually while retaining recovery function
+                        IconButton(
+                            onClick = { viewModel.restoreSampleData() },
                             modifier = Modifier
-                                .size(38.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(Brush.linearGradient(listOf(TrendBlue, ChartIndigo))),
-                            contentAlignment = Alignment.Center
+                                .testTag("reset_dataset")
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(SleekAppBg)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier.size(22.dp)
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Restore Default Sample Data",
+                                tint = SlateTextMedium,
+                                modifier = Modifier.size(20.dp)
                             )
                         }
-                        Column {
-                            Text(
-                                text = "EDUCATE",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                letterSpacing = 2.sp
-                            )
-                            Text(
-                                text = "Interactive Metrics Analyzer",
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = { viewModel.restoreSampleData() },
-                        modifier = Modifier.testTag("reset_dataset")
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = "Restore Default Sample Data",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.White
+                    )
                 )
-            )
+                HorizontalDivider(color = SoftBorder, thickness = 1.dp)
+            }
         },
         floatingActionButton = {
             if (activeTab == 1) {
                 FloatingActionButton(
                     onClick = { showAddDialog = true },
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = ChartIndigo,
+                    contentColor = Color.White,
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.testTag("add_custom_record_fab")
                 ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Add New Metrics Entry")
                 }
+            }
+        },
+        bottomBar = {
+            NavigationBar(
+                containerColor = Color.White,
+                tonalElevation = 0.dp,
+                windowInsets = WindowInsets.navigationBars,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(width = 1.dp, color = SoftBorder, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            ) {
+                NavigationBarItem(
+                    selected = activeTab == 0,
+                    onClick = { activeTab = 0 },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = "Visual Analytics Screen Indicator",
+                            modifier = Modifier.size(22.dp)
+                        )
+                    },
+                    label = { Text("HOME", fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = ChartIndigo,
+                        selectedTextColor = ChartIndigo,
+                        indicatorColor = ChartIndigo.copy(alpha = 0.1f),
+                        unselectedIconColor = SlateTextLight,
+                        unselectedTextColor = SlateTextLight
+                    ),
+                    modifier = Modifier.testTag("tab_analytics")
+                )
+                NavigationBarItem(
+                    selected = activeTab == 1,
+                    onClick = { activeTab = 1 },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.List,
+                            contentDescription = "Data Explorer Screen Indicator",
+                            modifier = Modifier.size(22.dp)
+                        )
+                    },
+                    label = { Text("STATS", fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = ChartIndigo,
+                        selectedTextColor = ChartIndigo,
+                        indicatorColor = ChartIndigo.copy(alpha = 0.1f),
+                        unselectedIconColor = SlateTextLight,
+                        unselectedTextColor = SlateTextLight
+                    ),
+                    modifier = Modifier.testTag("tab_explorer")
+                )
+                NavigationBarItem(
+                    selected = activeTab == 2,
+                    onClick = { activeTab = 2 },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "AI Strategic Advisor Indicator",
+                            modifier = Modifier.size(22.dp)
+                        )
+                    },
+                    label = { Text("AI ADVISOR", fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = ChartIndigo,
+                        selectedTextColor = ChartIndigo,
+                        indicatorColor = ChartIndigo.copy(alpha = 0.1f),
+                        unselectedIconColor = SlateTextLight,
+                        unselectedTextColor = SlateTextLight
+                    ),
+                    modifier = Modifier.testTag("tab_ai_advisor")
+                )
             }
         },
         modifier = modifier.fillMaxSize()
@@ -184,63 +270,14 @@ fun DashboardScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .background(Color.White)
+                .background(SleekAppBg)
         ) {
-            // KPI dynamic panel bar
+            // KPI dynamic panel bar representing the KPI card grid in Sleek theme
             EducationKpiMetricsPanel(
                 avgLiteracy = avgLiteracy,
                 avgPtRatio = avgPupilTeacher,
                 avgSpending = avgSpendingGdp ?: studentFunding
             )
-
-            // Dynamic Tab Indicators
-            PrimaryTabRow(
-                selectedTabIndex = activeTab,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Tab(
-                    selected = activeTab == 0,
-                    onClick = { activeTab = 0 },
-                    text = {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(imageVector = Icons.Default.Star, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Text("Visual Analytics", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        }
-                    },
-                    modifier = Modifier.testTag("tab_analytics")
-                )
-                Tab(
-                    selected = activeTab == 1,
-                    onClick = { activeTab = 1 },
-                    text = {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(imageVector = Icons.Default.List, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Text("Data Explorer", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        }
-                    },
-                    modifier = Modifier.testTag("tab_explorer")
-                )
-                Tab(
-                    selected = activeTab == 2,
-                    onClick = { activeTab = 2 },
-                    text = {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(imageVector = Icons.Default.Info, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Text("AI Strategic Advisor", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        }
-                    },
-                    modifier = Modifier.testTag("tab_ai_advisor")
-                )
-            }
 
             // Central Animated Swapper Content
             Box(modifier = Modifier.weight(1f)) {
@@ -346,47 +383,59 @@ fun KpiWidget(
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = LightCardBg),
-        border = BorderStroke(1.dp, SoftBorder),
+        shape = RoundedCornerShape(24.dp), // rounded-3xl from Sleek Interface HTML
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, SoftBorder), // border-slate-100
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp), // shadow-sm
         modifier = modifier
     ) {
         Column(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(16.dp)
                 .fillMaxWidth()
         ) {
+            Text(
+                text = title.uppercase(Locale.getDefault()),
+                fontSize = 11.sp,
+                color = SlateTextMedium, // text-slate-500
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(6.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
+                Text(
+                    text = value,
+                    fontSize = 24.sp, // text-2xl
+                    fontWeight = FontWeight.Bold,
+                    color = DarkSlate,
+                    maxLines = 1,
+                    modifier = Modifier.alignByBaseline()
+                )
+                // Premium Trend Indicator chip custom drawn
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
-                        .background(indicatorColor, CircleShape)
-                )
-                Text(
-                    text = title,
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                        .alignByBaseline()
+                        .background(indicatorColor.copy(alpha = 0.1f), RoundedCornerShape(6.dp))
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = if (indicatorColor == EmeraldGreen) "+2.4%" else if (indicatorColor == TrendBlue) "OPTIMAL" else "STABLE",
+                        color = indicatorColor,
+                        fontSize = 8.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = value,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = DarkSlate,
-                maxLines = 1
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
                 text = description,
                 fontSize = 9.sp,
-                color = Color.Gray,
+                color = SlateTextLight, // text-slate-400
                 lineHeight = 11.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -483,32 +532,40 @@ fun AnalyticsTabContent(
         
         // Horizontal scroll category badges
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             items(availableSubcats) { subcat ->
                 val isSelected = chartSubcategory == subcat
-                FilterChip(
-                    selected = isSelected,
+                Surface(
                     onClick = {
                         chartSubcategory = subcat
                         onHoverPointChange(null) // Reset highlight
                     },
-                    label = { Text(subcat, fontSize = 11.sp) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    shape = CircleShape,
+                    color = if (isSelected) ChartIndigo else Color.White,
+                    border = BorderStroke(1.dp, if (isSelected) Color.Transparent else CardBorderLight),
+                    shadowElevation = if (isSelected) 1.dp else 0.dp,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                ) {
+                    Text(
+                        text = subcat,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (isSelected) Color.White else DarkSlate,
+                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
                     )
-                )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = LightCardBg),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, SoftBorder),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -628,12 +685,19 @@ fun AnalyticsTabContent(
                 Box {
                     Button(
                         onClick = { expandedYearDropdown = true },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer),
-                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = DarkSlate),
+                        border = BorderStroke(1.dp, CardBorderLight),
+                        shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                         modifier = Modifier.height(32.dp)
                     ) {
-                        Text("Year: ${selectedComparisonYear ?: ""}", fontSize = 11.sp)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text("Year: ${selectedComparisonYear ?: ""}", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null, modifier = Modifier.size(12.dp), tint = SlateTextLight)
+                        }
                     }
                     DropdownMenu(
                         expanded = expandedYearDropdown,
@@ -661,9 +725,10 @@ fun AnalyticsTabContent(
         }
 
         Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = LightCardBg),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(1.dp, SoftBorder),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 40.dp)
@@ -1051,19 +1116,21 @@ fun ExplorerTabContent(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = onSearchChange,
-                placeholder = { Text("Search school, region, topic...", fontSize = 13.sp) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(18.dp)) },
+                placeholder = { Text("Search school, region, topic...", fontSize = 13.sp, color = SlateTextLight) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(18.dp), tint = SlateTextMedium) },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { onSearchChange("") }) {
-                            Icon(Icons.Default.Clear, contentDescription = "Clear search", modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Clear, contentDescription = "Clear search", modifier = Modifier.size(16.dp), tint = SlateTextMedium)
                         }
                     }
                 },
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = SoftBorder
+                    focusedBorderColor = ChartIndigo,
+                    unfocusedBorderColor = CardBorderLight,
+                    focusedTextColor = DarkSlate,
+                    unfocusedTextColor = DarkSlate
                 ),
                 singleLine = true,
                 modifier = Modifier
@@ -1077,10 +1144,10 @@ fun ExplorerTabContent(
                 onClick = { filterExpanded = !filterExpanded },
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (filterExpanded) MaterialTheme.colorScheme.primaryContainer else LightCardBg,
-                    contentColor = if (filterExpanded) MaterialTheme.colorScheme.onPrimaryContainer else DarkSlate
+                    containerColor = if (filterExpanded) ChartIndigo else Color.White,
+                    contentColor = if (filterExpanded) Color.White else DarkSlate
                 ),
-                border = BorderStroke(1.dp, SoftBorder),
+                border = BorderStroke(1.dp, CardBorderLight),
                 contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
                 modifier = Modifier
                     .height(52.dp)
@@ -1103,9 +1170,10 @@ fun ExplorerTabContent(
             exit = shrinkVertically() + fadeOut()
         ) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = LightCardBg),
-                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                shape = RoundedCornerShape(24.dp),
                 border = BorderStroke(1.dp, SoftBorder),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 10.dp)
@@ -1239,17 +1307,17 @@ fun FilterBadgeSelector(
             val isSelected = item == selectedItem
             Surface(
                 onClick = { onSelect(item) },
-                shape = RoundedCornerShape(6.dp),
-                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White,
-                border = BorderStroke(1.dp, if (isSelected) Color.Transparent else SoftBorder),
+                shape = CircleShape,
+                color = if (isSelected) ChartIndigo else Color.White,
+                border = BorderStroke(1.dp, if (isSelected) Color.Transparent else CardBorderLight),
                 modifier = Modifier.testTag("filter_chip_${item.lowercase().replace(" ", "_").replace("(", "").replace(")", "").replace("%", "")}")
             ) {
                 Text(
                     text = item,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = if (isSelected) Color.White else DarkSlate,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                 )
             }
         }
@@ -1265,9 +1333,10 @@ fun MetricCardItem(
     var expandedNotes by remember { mutableStateOf(false) }
 
     Card(
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = LightCardBg),
+        shape = RoundedCornerShape(24.dp), // rounded-3xl standard from Sleek Interface
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, SoftBorder),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         modifier = Modifier
             .fillMaxWidth()
             .testTag("metric_record_${item.id}")
@@ -1460,68 +1529,68 @@ fun AiAdvisorTabContent(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        // AI Header card banner
+        // AI Header card banner matching Quick Insights from HTML
         Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFEEF2FF)), // bg-indigo-50
+            border = BorderStroke(1.dp, Color(0xFFE0E7FF)), // border-indigo-100
             modifier = Modifier.fillMaxWidth()
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFFC7D2FE)), // bg-indigo-100
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .background(MaterialTheme.colorScheme.primary, CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
-                    }
-                    Column {
-                        Text(
-                            text = "AI Educational Strategic Lab",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                        Text(
-                            text = "Synthesizer backed by Gemini 3.5 Flash",
-                            fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Growth Strategist",
+                        tint = ChartIndigo,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Request macro-policy action guidelines, institutional strategic advice, or correlations directly derived from your active statistics database filter boundaries.",
-                    fontSize = 11.sp,
-                    lineHeight = 14.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.9f)
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "GROWTH STRATEGIST LAB",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1E1B4B), // text-indigo-900
+                        letterSpacing = 1.sp
+                    )
+                    Text(
+                        text = "Real-time AI policy action guidelines and macro-level correlation summaries backed by modern model snapshots.",
+                        fontSize = 11.sp,
+                        lineHeight = 14.sp,
+                        color = Color(0xFF4338CA).copy(alpha = 0.85f), // text-indigo-700
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         Text(
-            text = "CHOOSE SYSTEM SUGGESTIONS:",
-            fontSize = 11.sp,
+            text = "CHOOSE SYSTEM SUGGESTIONS",
+            fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
+            color = ChartIndigo,
             letterSpacing = 1.sp
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         // Micro recommendation chips scrolling row
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             suggestedQuestions.forEach { prompt ->
                 Surface(
@@ -1529,33 +1598,37 @@ fun AiAdvisorTabContent(
                         questionInput = prompt
                         onSubmitQuestion(prompt)
                     },
-                    shape = RoundedCornerShape(20.dp),
-                    color = LightCardBg,
-                    border = BorderStroke(1.dp, SoftBorder),
-                    modifier = Modifier.testTag("ai_suggestion_chip_${prompt.take(15).lowercase().replace(" ", "_")}")
+                    shape = CircleShape,
+                    color = Color.White,
+                    border = BorderStroke(1.dp, CardBorderLight),
+                    modifier = Modifier
+                        .testTag("ai_suggestion_chip_${prompt.take(15).lowercase().replace(" ", "_")}")
+                        .padding(vertical = 4.dp)
                 ) {
                     Text(
                         text = prompt,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = DarkSlate,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         // Custom search query field box
         OutlinedTextField(
             value = questionInput,
             onValueChange = { questionInput = it },
-            placeholder = { Text("Ask. e.g. How does funding impact high school grad rates?", fontSize = 13.sp) },
-            shape = RoundedCornerShape(12.dp),
+            placeholder = { Text("Ask. e.g. How does funding impact high school grad rates?", fontSize = 13.sp, color = SlateTextLight) },
+            shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = SoftBorder
+                focusedBorderColor = ChartIndigo,
+                unfocusedBorderColor = CardBorderLight,
+                focusedTextColor = DarkSlate,
+                unfocusedTextColor = DarkSlate
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -1563,7 +1636,7 @@ fun AiAdvisorTabContent(
                 .testTag("ai_question_input")
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             onClick = {
@@ -1572,7 +1645,12 @@ fun AiAdvisorTabContent(
                 }
             },
             enabled = !aiLoading && questionInput.isNotBlank(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = ChartIndigo,
+                contentColor = Color.White,
+                disabledContainerColor = ChartIndigo.copy(alpha = 0.5f)
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
@@ -1600,9 +1678,10 @@ fun AiAdvisorTabContent(
             exit = slideOutVertically(targetOffsetY = { 40 }) + fadeOut()
         ) {
             Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = LightCardBg),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 border = BorderStroke(1.dp, SoftBorder),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp)
@@ -1620,7 +1699,7 @@ fun AiAdvisorTabContent(
                             text = "Core Analytics Guidelines Output",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
+                            color = ChartIndigo
                         )
                         if (aiResult != null) {
                             IconButton(
@@ -1630,11 +1709,11 @@ fun AiAdvisorTabContent(
                                 },
                                 modifier = Modifier.size(24.dp)
                             ) {
-                                Icon(imageVector = Icons.Default.Clear, contentDescription = "Close", modifier = Modifier.size(14.dp))
+                                Icon(imageVector = Icons.Default.Clear, contentDescription = "Close", modifier = Modifier.size(14.dp), tint = SlateTextMedium)
                             }
                         }
                     }
-                    Divider(color = SoftBorder, modifier = Modifier.padding(vertical = 10.dp))
+                    HorizontalDivider(color = SoftBorder, modifier = Modifier.padding(vertical = 10.dp))
 
                     if (aiLoading) {
                         Column(
@@ -1644,8 +1723,8 @@ fun AiAdvisorTabContent(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                            Text("AI is extracting statistics from your custom metrics snapshots...", fontSize = 11.sp, color = Color.Gray, textAlign = TextAlign.Center)
+                            CircularProgressIndicator(color = ChartIndigo)
+                            Text("AI is extracting statistics from your custom metrics snapshots...", fontSize = 11.sp, color = SlateTextMedium, textAlign = TextAlign.Center)
                         }
                     } else if (aiResult != null) {
                         Text(
