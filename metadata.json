@@ -1,0 +1,6 @@
+{
+  "name": "Education Dashboard",
+  "description": "An interactive data-rich dashboard designed to visualize, filter, analyze, and manage national and local educational performance metrics with built-in AI policy analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

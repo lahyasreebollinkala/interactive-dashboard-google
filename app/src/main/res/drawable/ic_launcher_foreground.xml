@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Central Group with slight shadow/depth translation -->
+    <group
+        android:translateX="0"
+        android:translateY="0">
+        
+        <!-- Mortarboard Cap (Graduation cap representing Education) -->
+        <!-- Diamond Top -->
+        <path
+            android:fillColor="#38BDF8"
+            android:pathData="M54,23 L85,34 L54,45 L23,34 Z" />
+            
+        <!-- Tassel -->
+        <path
+            android:fillColor="#F59E0B"
+            android:pathData="M54,34 L80,39 L80,54 A3,3 0 0,1 77,57 A3,3 0 0,1 74,54 L74,40 Z" />
+            
+        <!-- Cap Skull/Base -->
+        <path
+            android:fillColor="#0EA5E9"
+            android:pathData="M38,40 L38,49 C38,55 70,55 70,49 L70,40 C64,44 44,44 38,40 Z" />
+
+        <!-- Dashboard Bar Chart (Growth Metrics representing Analytics) -->
+        <!-- Bar 1 (Left, low) -->
+        <path
+            android:fillColor="#6366F1"
+            android:pathData="M32,65 H40 V82 H32 Z" />
+            
+        <!-- Bar 2 (Middle, medium) -->
+        <path
+            android:fillColor="#818CF8"
+            android:pathData="M49,58 H57 V82 H49 Z" />
+            
+        <!-- Bar 3 (Right, high) -->
+        <path
+            android:fillColor="#A5B4FC"
+            android:pathData="M66,48 H74 V82 H66 Z" />
+            
+        <!-- Analytical Trend Line passing through bars -->
+        <path
+            android:strokeColor="#10B981"
+            android:strokeWidth="3.5"
+            android:strokeLineCap="round"
+            android:fillColor="#00000000"
+            android:pathData="M28,74 L46,65 L61,56 L78,44" />
+            
+        <!-- Highlight dot at peak of trend line -->
+        <path
+            android:fillColor="#34D399"
+            android:pathData="M78,44 M78,44 A4,4 0 1,1 74,40 A4,4 0 0,1 78,44 Z" />
+    </group>
+</vector>
